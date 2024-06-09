@@ -8,8 +8,9 @@
 #include "esp_sntp.h"
 
 // Pins
-#define LED_PIN              32
-#define MOTION_PIN           34
+#define LED_PIN              27
+#define MOTION_PIN           12
+#define SWITCH_NAME          "NAME"
 
 // Hardware Config
 #define PWM_FREQ    5000
@@ -45,6 +46,7 @@ hw_timer_t *My_timer = NULL;
 bool motionFlag = false;
 bool timeFlag = false;
 bool turnOnLights = true;
+bool lights_are_on = false;
 
 
 /*--------------- Functions -----------------*/
@@ -126,22 +128,15 @@ void setup() {
       Serial.printf("\r\n %d. %s IP: %s Relay: %d", i, p->alias, p->ip_address, p->state);
     }
   }
-  lightSwitch = kasaUtil.GetSmartPlug("Switch Name"); 
+  lightSwitch = kasaUtil.GetSmartPlug(SWITCH_NAME); 
   
   Serial.printf("\r\n lightSwitch = %d", lightSwitch);
   // Motion sensor setup
   pinMode(MOTION_PIN, INPUT);
-  attachInterrupt(MOTION_PIN, motionISR, RISING);
 
   // LED setup
   ledcSetup(PWM_CHANNEL, PWM_FREQ, PWM_RES);
   ledcAttachPin(LED_PIN, PWM_CHANNEL);
-
-  // Timer setup
-  My_timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(My_timer, &onTimer, true);
-  timerAlarmWrite(My_timer, (LIGHT_TIMEOUT * 60) * 1000000, true);
-  timerAlarmEnable(My_timer);
 
   Serial.println("Setup Finished");
   printLocalTime();
@@ -150,28 +145,25 @@ void setup() {
 /*--------------- Main Loop -----------------*/
 void loop() {
   // Turn lights on 
-  if(motionFlag){
+  Serial.println(digitalRead(MOTION_PIN));
+  if(!lights_are_on && digitalRead(MOTION_PIN)){
     lightsOn();
-    timerRestart(My_timer);
-    timerStart(My_timer);
-    delay(1000);
-    motionFlag = false;
+    lights_are_on = true;
   }
   // Turn lights off if time is up
-  if(timeFlag){
+  if(lights_are_on && !digitalRead(MOTION_PIN)){
     lightsOff();
-    timerStop(My_timer);
-    timeFlag = false;
+    lights_are_on = false;
   }
-  Scan for the device if it was not found at start
+  // Scan for the device if it was not found at start
   if(lightSwitch == NULL){
     kasaUtil.ScanDevices(200);
-    lightSwitch = kasaUtil.GetSmartPlug("Switch Name"); 
+    lightSwitch = kasaUtil.GetSmartPlug(SWITCH_NAME); 
   }
   // Check time of day
   if(getLocalTime(&timeinfo)){
     int current_min = (timeinfo.tm_hour * 60) + timeinfo.tm_min;
     turnOnLights = ((END_NIGHT * 60 < current_min) && (current_min < START_NIGHT * 60));
   }
-  delay(150);
+  delay(1000);
 }
