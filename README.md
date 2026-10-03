@@ -2,7 +2,9 @@
 
 Room lights that turn themselves on when someone is actually *in* the room, and off when they leave. It uses a **24 GHz mmWave presence sensor (HLK-LD2410C)** rather than a PIR, so it keeps the lights on while you're sitting still. When presence is detected, an ESP32 fades up a 12 V LED strip and switches on a **Kasa HS200 smart light switch** over Wi-Fi. When the room empties, everything fades back off.
 
-<!-- PHOTOS: add photos of the install and the printed enclosure here, e.g. ![Install](docs/install.jpg) -->
+<p align="center"><img src="docs/installed.jpg" alt="The sensor enclosure mounted on a wall" width="360"></p>
+
+*The enclosure on the wall. The LD2410C radar sits behind the window in the lid.*
 
 ## How it works
 
@@ -20,7 +22,7 @@ Room lights that turn themselves on when someone is actually *in* the room, and 
 - Kasa Smart Light Switch HS200
 - 12 V LED light strip and a 12 V power supply
 - Logic-level MOSFET and resistors to drive the strip
-- 3D-printed parts in `STL Files/`: an ESP holder with lid, and a mounting bar
+- 3D-printed enclosure: see [Enclosure](#enclosure)
 
 ### Pins
 
@@ -28,6 +30,22 @@ Room lights that turn themselves on when someone is actually *in* the room, and 
 |---|---|
 | LED strip PWM (to MOSFET gate) | 27 |
 | LD2410C presence output | 12 |
+
+## Enclosure
+
+![Enclosure parts](docs/enclosure.png)
+
+The printable parts are in `STL Files/`:
+
+| File | Part |
+|---|---|
+| `Enclosure case.STL` | Case, 58 × 58 × 23 mm |
+| `Enclosure spacer.STL` | Spacer frame with two screw bosses |
+| `Enclosure lid.STL` | Lid with a window for the radar sensor |
+| `Big ESP holder.STL`, `Big ESP holder lid.STL` | ESP32 holder and lid |
+| `bar.STL` | Mounting bar |
+
+GitHub can show the STL files in 3D: open one there to rotate it.
 
 ## Setup
 
@@ -54,5 +72,5 @@ This is a [PlatformIO](https://platformio.org/) project; the VS Code extension i
 | `src/main.cpp` | ESP32 firmware |
 | `include/secrets.example.h` | Template for your Wi-Fi details and switch name |
 | `platformio.ini` | Board, build settings and libraries |
-| `STL Files/Big ESP holder.STL`, `Big ESP holder lid.STL` | Printable enclosure for the ESP32 |
-| `STL Files/bar.STL` | Mounting bar |
+| `STL Files/` | 3D-printable enclosure parts (see [Enclosure](#enclosure)) |
+| `docs/` | README images |
