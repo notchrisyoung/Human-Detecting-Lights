@@ -1,16 +1,22 @@
+#include <Arduino.h>
 #include <KasaSmartPlug.h>
-#include <KasaSmartPlug.hpp>
-#include <Arduino_JSON.h>
 #include <WiFi.h>
 #include "time.h"
-#include "sntp.h"
 #include "esp_system.h"
 #include "esp_sntp.h"
+
+// Wi-Fi details and the Kasa switch name live in include/secrets.h, which is
+// git-ignored. Copy include/secrets.example.h to include/secrets.h to set them.
+#if __has_include("secrets.h")
+#include "secrets.h"
+#else
+#warning "secrets.h not found - using the placeholder values from secrets.example.h"
+#include "secrets.example.h"
+#endif
 
 // Pins
 #define LED_PIN              27
 #define MOTION_PIN           12
-#define SWITCH_NAME          "NAME"
 
 // Hardware Config
 #define PWM_FREQ    5000
@@ -26,13 +32,13 @@
 #define LED_FADE_TIME        2
 
 // WIFI
-const char* ssid       = "ssid";
-const char* password   = "password";
+const char* ssid       = WIFI_SSID;
+const char* password   = WIFI_PASSWORD;
 
 // Time
 const char* ntpServer1 = "pool.ntp.org";
 const char* ntpServer2 = "time.nist.gov";
-const char* time_zone = "PST8PDT,M3.2.0,M11.1.0";  // TimeZone rule for Europe/Rome including daylight adjustment rules (optional)
+const char* time_zone = "PST8PDT,M3.2.0,M11.1.0";  // POSIX TZ rule: US Pacific, with daylight saving
 struct tm timeinfo;
 
 // WIFI Switch
@@ -130,7 +136,7 @@ void setup() {
   }
   lightSwitch = kasaUtil.GetSmartPlug(SWITCH_NAME); 
   
-  Serial.printf("\r\n lightSwitch = %d", lightSwitch);
+  Serial.printf("\r\n lightSwitch = %p", (void *)lightSwitch);
   // Motion sensor setup
   pinMode(MOTION_PIN, INPUT);
 

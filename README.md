@@ -31,21 +31,28 @@ Room lights that turn themselves on when someone is actually *in* the room, and 
 
 ## Setup
 
-1. Arduino IDE with the **ESP32 board package**.
-2. Libraries: `KasaSmartPlug` and `Arduino_JSON`.
-3. In `LightController/LightController.ino`, set:
-   - `ssid` / `password`: your Wi-Fi
-   - `SWITCH_NAME`: the name of your Kasa switch exactly as it appears in the Kasa app
-   - `time_zone`: your POSIX TZ string
-   - Optional: `LED_DAY_BRIGHTNESS`, `LED_NIGHT_BRIGHTNESS`, `START_NIGHT`, `END_NIGHT`
-4. Upload. The serial monitor (115200) lists every Kasa device found on the network, which helps if the switch name doesn't match.
+This is a [PlatformIO](https://platformio.org/) project; the VS Code extension is the easiest way to use it. `platformio.ini` sets the board and pins the libraries, so there's nothing to install by hand:
 
-> Don't commit your real Wi-Fi credentials. Keep them only in your local copy.
+| Library | Version | Notes |
+|---|---|---|
+| [KasaSmartPlug](https://github.com/kj831ca/KasaSmartPlug) | pinned to a commit | Not in the PlatformIO registry, so it's pulled from GitHub |
+| ArduinoJson | 6.x | KasaSmartPlug uses the v6 API |
+| Arduino-ESP32 core | 2.x (`espressif32@6.9.0`) | The firmware uses the `ledcSetup` PWM API, which core 3.x removed |
+
+1. Copy `include/secrets.example.h` to `include/secrets.h` and set:
+   - `WIFI_SSID` / `WIFI_PASSWORD`: your Wi-Fi
+   - `SWITCH_NAME`: the name of your Kasa switch exactly as it appears in the Kasa app
+
+   `secrets.h` is git-ignored, so your Wi-Fi password can't be committed by accident.
+2. Optional, in `src/main.cpp`: `time_zone` (POSIX TZ string), `LED_DAY_BRIGHTNESS`, `LED_NIGHT_BRIGHTNESS`, `START_NIGHT`, `END_NIGHT`.
+3. `pio run -t upload`, then `pio device monitor`. The serial monitor (115200) lists every Kasa device found on the network, which helps if the switch name doesn't match.
 
 ## Files
 
 | Path | Purpose |
 |---|---|
-| `LightController/LightController.ino` | ESP32 firmware |
+| `src/main.cpp` | ESP32 firmware |
+| `include/secrets.example.h` | Template for your Wi-Fi details and switch name |
+| `platformio.ini` | Board, build settings and libraries |
 | `STL Files/Big ESP holder.STL`, `Big ESP holder lid.STL` | Printable enclosure for the ESP32 |
 | `STL Files/bar.STL` | Mounting bar |
