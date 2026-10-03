@@ -47,7 +47,6 @@ The printable parts are in `STL Files/`:
 | `Big ESP holder.STL` | Main case, 90 × 70 × 29 mm. Holds the ESP32 breakout board, with a cut-out for the power jack |
 | `Big ESP holder lid.STL` | Lid with the pocket and window for the LD2410C |
 | `bar.STL` | Bar that holds the LD2410C in the lid's pocket |
-| `Enclosure case.STL`, `Enclosure spacer.STL`, `Enclosure lid.STL` | A smaller 58 × 58 mm case with a spacer and a windowed lid ([render](docs/enclosure.png)) |
 
 GitHub can show the STL files in 3D: open one there to rotate it.
 
