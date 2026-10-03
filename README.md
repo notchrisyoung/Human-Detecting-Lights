@@ -4,7 +4,7 @@ Room lights that turn themselves on when someone is actually *in* the room, and 
 
 <p align="center"><img src="docs/installed.jpg" alt="The sensor enclosure mounted on a wall" width="360"></p>
 
-*The enclosure on the wall. The LD2410C radar sits behind the window in the lid.*
+*Mounted on the wall. The LD2410C radar sits behind the window in the lid.*
 
 ## How it works
 
@@ -33,17 +33,21 @@ Room lights that turn themselves on when someone is actually *in* the room, and 
 
 ## Enclosure
 
-![Enclosure parts](docs/enclosure.png)
+| Inside | Closed up |
+|---|---|
+| ![The enclosure opened up](docs/inside.jpg) | ![The enclosure closed](docs/closed.jpg) |
+| The ESP32 on a breakout board, screwed into the holder, with the LED-strip MOSFET on the left. The LD2410C is glued into the pocket in the lid and held by the printed bar. The lid screws into brass heat-set inserts. | Closed up: the radar shows through the window in the lid. The power jack and the LED-strip leads come out of the side. |
+
+![ESP holder, lid and bar](docs/esp-holder.png)
 
 The printable parts are in `STL Files/`:
 
 | File | Part |
 |---|---|
-| `Enclosure case.STL` | Case, 58 × 58 × 23 mm |
-| `Enclosure spacer.STL` | Spacer frame with two screw bosses |
-| `Enclosure lid.STL` | Lid with a window for the radar sensor |
-| `Big ESP holder.STL`, `Big ESP holder lid.STL` | ESP32 holder and lid |
-| `bar.STL` | Mounting bar |
+| `Big ESP holder.STL` | Main case, 90 × 70 × 29 mm. Holds the ESP32 breakout board, with a cut-out for the power jack |
+| `Big ESP holder lid.STL` | Lid with the pocket and window for the LD2410C |
+| `bar.STL` | Bar that holds the LD2410C in the lid's pocket |
+| `Enclosure case.STL`, `Enclosure spacer.STL`, `Enclosure lid.STL` | A smaller 58 × 58 mm case with a spacer and a windowed lid ([render](docs/enclosure.png)) |
 
 GitHub can show the STL files in 3D: open one there to rotate it.
 
