@@ -11,7 +11,7 @@ Room lights that turn themselves on when someone is actually *in* the room, and 
 - The LD2410C's presence output pin is read once a second.
 - **Someone present →** the LED strip fades up (PWM through a MOSFET) and the Kasa switch is turned on.
 - **Room empty →** the Kasa switch turns off and the strip fades down to off.
-- **Night mode (22:00–06:00):** the strip comes on at a dimmer level (`LED_NIGHT_BRIGHTNESS`) and the Kasa switch is left **off**, so you get a soft night light instead of the main room lights.
+- **Night mode (10:00pm–06:00am):** the strip comes on at a dimmer level (`LED_NIGHT_BRIGHTNESS`) and the Kasa switch is left **off**, so you get a soft night light instead of the main room lights.
 - Time comes from NTP, with a POSIX time-zone string (`PST8PDT,...` by default).
 - If the Kasa switch isn't found at boot, the sketch keeps re-scanning the network for it.
 
